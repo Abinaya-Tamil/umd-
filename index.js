@@ -3,10 +3,10 @@ const path = require('path');
 const pool = require('./db');
 const { getData } = require('./getdata');
 const app = express();
-const port = process.env.PORT || 3078;
+const port = process.env.PORT || 3048;
 
 // Static files
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'docs')));
 
 // Endpoint to fetch table names
 app.get('/api/tables', async (req, res) => {
