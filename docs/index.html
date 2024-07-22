@@ -46,7 +46,7 @@
                     tables.forEach(table => {
                         const listItem = document.createElement('li');
                         const link = document.createElement('a');
-                        link.href = `/api/${table}`;
+                        link.href = `http://localhost:3100/api/${table}`; // Update to match your deployed URL if necessary
                         link.textContent = `Table: ${table} - API URL: /api/${table}`;
                         listItem.appendChild(link);
                         tableList.appendChild(listItem);

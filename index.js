@@ -5,7 +5,11 @@ const pool = require('./db');
 const { getData } = require('./getdata');
 const app = express();
 const port = process.env.PORT || 3100;
-app.use(cors());
+
+// CORS configuration
+app.use(cors({
+    origin: 'https://abinaya-tamil.github.io' // Allow only your GitHub Pages domain
+}));
 
 // Serve static files from the 'docs' directory
 app.use(express.static(path.join(__dirname, 'docs')));
@@ -32,10 +36,12 @@ app.get('/api/:tableName', async (req, res) => {
     }
 });
 
+// Test endpoint
 app.get('/api/test', (req, res) => {
     res.send('Test endpoint is working');
 });
 
+// Start the server
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
