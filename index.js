@@ -3,9 +3,9 @@ const path = require('path');
 const pool = require('./db');
 const { getData } = require('./getdata');
 const app = express();
-const port = process.env.PORT || 3048;
+const port = process.env.PORT || 3100;
 
-// Static files
+// Serve static files from the 'docs' directory
 app.use(express.static(path.join(__dirname, 'docs')));
 
 // Endpoint to fetch table names
@@ -19,17 +19,15 @@ app.get('/api/tables', async (req, res) => {
     }
 });
 
-// Other endpoints
-const tables = [/* your tables list */];
-tables.forEach((tableName) => {
-    app.get(`/api/${tableName}`, async (req, res) => {
-        try {
-            const results = await getData(tableName);
-            res.json(results);
-        } catch (err) {
-            res.status(500).send(`Error retrieving data from ${tableName}: ${err.message}`);
-        }
-    });
+// Dynamically create endpoints for each table
+app.get('/api/:tableName', async (req, res) => {
+    const tableName = req.params.tableName;
+    try {
+        const results = await getData(tableName);
+        res.json(results);
+    } catch (err) {
+        res.status(500).send(`Error retrieving data from ${tableName}: ${err.message}`);
+    }
 });
 
 app.get('/api/test', (req, res) => {

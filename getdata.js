@@ -1,15 +1,13 @@
-// getdata.js
 const pool = require('./db');
 
-const getData = async (tableName) => {
-  const query = 'SELECT * FROM ??';
-  try {
-    const [results] = await pool.query(query, [tableName]);
-    return results;
-  } catch (err) {
-    console.error(`Error querying table ${tableName}: ${err.message}`);
-    throw err;
-  }
-};
+// Function to get data from a specific table
+async function getData(tableName) {
+    try {
+        const [results] = await pool.query(`SELECT * FROM ${tableName}`);
+        return results;
+    } catch (err) {
+        throw new Error(`Error retrieving data from ${tableName}: ${err.message}`);
+    }
+}
 
 module.exports = { getData };
