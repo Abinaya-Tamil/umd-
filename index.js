@@ -1,18 +1,37 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
+const winston = require('winston');
 const pool = require('./db');
 const { getData } = require('./getdata');
+require('dotenv').config(); // Load environment variables from .env file
+
 const app = express();
 const port = process.env.PORT || 3100;
 
+// Logger setup
+const logger = winston.createLogger({
+    level: 'info',
+    format: winston.format.combine(
+        winston.format.timestamp(),
+        winston.format.json()
+    ),
+    transports: [
+        new winston.transports.Console(),
+        new winston.transports.File({ filename: 'server.log' })
+    ],
+});
+
 // CORS configuration
 app.use(cors({
-    origin: 'https://abinaya-tamil.github.io' // Allow only your GitHub Pages domain
+    origin: '*', // Allow requests from any origin
 }));
 
 // Serve static files from the 'docs' directory
 app.use(express.static(path.join(__dirname, 'docs')));
+
+// Middleware for parsing JSON requests
+app.use(express.json());
 
 // Endpoint to fetch table names
 app.get('/api/tables', async (req, res) => {
@@ -21,6 +40,7 @@ app.get('/api/tables', async (req, res) => {
         const tableNames = results.map(row => Object.values(row)[0]);
         res.json(tableNames);
     } catch (err) {
+        logger.error(`Error retrieving table list: ${err.message}`);
         res.status(500).send(`Error retrieving table list: ${err.message}`);
     }
 });
@@ -32,6 +52,7 @@ app.get('/api/:tableName', async (req, res) => {
         const results = await getData(tableName);
         res.json(results);
     } catch (err) {
+        logger.error(`Error retrieving data from ${tableName}: ${err.message}`);
         res.status(500).send(`Error retrieving data from ${tableName}: ${err.message}`);
     }
 });
@@ -43,5 +64,5 @@ app.get('/api/test', (req, res) => {
 
 // Start the server
 app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+    logger.info(`Server is running on http://localhost:${port}`);
 });
