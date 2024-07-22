@@ -4,24 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Database Tables</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin: 5px 0;
+        }
+        a {
+            text-decoration: none;
+            color: blue;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
     <h1>Database Tables</h1>
-    <ul id="table-list">
-        <!-- Table names and API URLs will be populated here -->
-    </ul>
+    <ul id="tableList"></ul>
+
     <script>
-        fetch('/api/tables')
-            .then(response => response.json())
-            .then(data => {
-                const tableList = document.getElementById('table-list');
-                data.forEach(table => {
-                    const li = document.createElement('li');
-                    li.textContent = `Table: ${table} - API URL: /api/${table}`;
-                    tableList.appendChild(li);
-                });
-            })
-            .catch(error => console.error('Error fetching tables:', error));
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('/api/tables')
+                .then(response => response.json())
+                .then(tables => {
+                    const tableList = document.getElementById('tableList');
+                    tables.forEach(table => {
+                        const listItem = document.createElement('li');
+                        const link = document.createElement('a');
+                        link.href = `/api/${table}`;
+                        link.textContent = `Table: ${table} - API URL: /api/${table}`;
+                        listItem.appendChild(link);
+                        tableList.appendChild(listItem);
+                    });
+                })
+                .catch(error => console.error('Error fetching table list:', error));
+        });
     </script>
 </body>
 </html>
