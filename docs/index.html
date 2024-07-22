@@ -34,10 +34,10 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Replace the following URL with your actual Gist URL
-            const gistUrl = 'https://gist.githubusercontent.com/yourusername/yourgistid/raw/filename.json';
+            // Replace with your actual API URL
+            const apiUrl = 'https://your-backend-url.herokuapp.com/api/tables';
 
-            fetch(gistUrl)
+            fetch(apiUrl)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
@@ -49,7 +49,7 @@
                     tables.forEach(table => {
                         const listItem = document.createElement('li');
                         const link = document.createElement('a');
-                        link.href = `https://your-backend-url.com/api/${table}`; // Update to match your deployed backend URL
+                        link.href = `https://your-backend-url.herokuapp.com/api/${table}`; // Update to match your deployed backend URL
                         link.textContent = `Table: ${table} - API URL: /api/${table}`;
                         listItem.appendChild(link);
                         tableList.appendChild(listItem);

@@ -28,7 +28,7 @@ app.use(cors({
 }));
 
 // Serve static files from the 'docs' directory
-app.use(express.static(path.join(__dirname, 'docs')));
+///app.use(express.static(path.join(__dirname, 'docs')));
 
 // Middleware for parsing JSON requests
 app.use(express.json());
