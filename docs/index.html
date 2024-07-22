@@ -34,10 +34,10 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            fetch('http://your-api-server-url/api/tables')  // Replace with your actual API URL
+            fetch('http://localhost:3100/api/tables')
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
+                        throw new Error('Network response was not ok');
                     }
                     return response.json();
                 })
@@ -46,7 +46,7 @@
                     tables.forEach(table => {
                         const listItem = document.createElement('li');
                         const link = document.createElement('a');
-                        link.href = `http://your-api-server-url/api/${table}`;  // Replace with your actual API URL
+                        link.href = `/api/${table}`;
                         link.textContent = `Table: ${table} - API URL: /api/${table}`;
                         listItem.appendChild(link);
                         tableList.appendChild(listItem);
