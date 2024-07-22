@@ -1,9 +1,11 @@
 const express = require('express');
 const path = require('path');
+const cors = require('cors');
 const pool = require('./db');
 const { getData } = require('./getdata');
 const app = express();
 const port = process.env.PORT || 3100;
+app.use(cors());
 
 // Serve static files from the 'docs' directory
 app.use(express.static(path.join(__dirname, 'docs')));
